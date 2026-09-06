@@ -38,6 +38,11 @@ Everything needed is already installed. Do not run `npm install`, do not add to
 `package.json`, and do not suggest a new library. If something seems to need one,
 implement it by hand in ~20 lines instead, or say it is not possible.
 
+**Known trap:** `lib/utils.ts` re-exports `cn` from the `cn` package. That is
+correct for this shadcn version. Do NOT rewrite it to the older
+`clsx` + `tailwind-merge` implementation you may have seen elsewhere — neither
+package is installed and the build will break.
+
 ## Rule 4 — Use theme tokens, never raw colours
 
 The app must not look like default shadcn. Colour is controlled entirely by
