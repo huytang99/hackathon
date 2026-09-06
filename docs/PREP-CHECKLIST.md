@@ -48,6 +48,15 @@ otherwise pay for at 3x cost on the day.
 - [ ] Confirm `npm run verify` passes from a clean clone
 - [ ] VS Code + Copilot signed in on **both** seats; confirm agent mode works
 - [ ] Check the AI credit balance on both seats and pick default models
+- [ ] **Confirm the agent dropdown shows `plan` and `feature`.** Custom agents
+      (`.github/agents/*.agent.md`) need a recent VS Code — older versions used
+      `.chatmode.md` and some predate the feature entirely. If they do not
+      appear, the `.github/prompts/` files are the fallback and the runbook says
+      so; just know which path you are on **before** the day.
+- [ ] Fill in the **product overview** placeholder at the top of
+      `.github/copilot-instructions.md` during the dress rehearsal, so you have
+      practised it. GitHub's own guidance puts a project overview first, and
+      every request in the repo reads that file.
 - [ ] Node 24 on both machines (`.nvmrc` is committed)
 - [ ] Prettier format-on-save enabled on both — prevents whole-file diff churn
 - [ ] Git identity configured; push access to the repo proven on both
@@ -94,6 +103,11 @@ common way this plan degrades.
       practise using it on **one narrow non-critical slice**. Never on the
       critical path — the full loop is measured up to 10x slower than iterative
       prompting and is widely reported as overkill below two days of work.
+- [ ] Browse [github/awesome-copilot](https://github.com/github/awesome-copilot)
+      — the curated collection of instructions, prompts and agents. Useful if
+      the topic turns out to need a stack we have no rules for. **Do not bulk
+      import from it.** Copilot's own guidance is that long instructions dilute
+      effectiveness; take at most one file and only if it earns its place.
 
 ---
 
@@ -103,3 +117,12 @@ common way this plan degrades.
 - Auth, a database layer, Docker, or CI. All banned by the instructions file.
 - More than three themes. Choice costs time at T+10.
 - Test infrastructure. There is no time to maintain it, and nobody scores it.
+- **A large library of instruction or prompt files.** Considered and rejected:
+  path-scoped `.github/instructions/*.instructions.md` (we had two and deleted
+  them — they duplicated the main file, and that duplication is what caused the
+  one real drift bug we found), plus bulk imports from awesome-copilot. Copilot's
+  guidance is explicit that lengthy instructions dilute effectiveness, and that
+  stale rules make the model "sound confident about yesterday's architecture."
+  Five prompts, two agents and one instructions file is the whole surface.
+- **MCP servers.** Real capability, but every one is a live dependency that can
+  fail at T+40 with nobody free to debug it.

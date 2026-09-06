@@ -26,8 +26,12 @@ Whole team. No laptops open.
 **This is the whole planning phase.** Lead on laptop 1, Copilot Chat in agent
 mode, Navigator A reading over their shoulder.
 
-Run the `kickoff` prompt — in Copilot Chat, type `/kickoff`, or attach
-`.github/prompts/kickoff.prompt.md`. It asks for two inputs:
+Pick **plan** from the agent dropdown in Copilot Chat. That mode cannot write
+application code — only `PLAN.md` — so the model cannot start building while
+you are still deciding what to build. (If the dropdown does not show it, your
+VS Code is older: type `/kickoff` instead. Same content, no guardrail.)
+
+It asks for two inputs:
 
 - `topic` — paste the announced topic verbatim
 - `idea` — two or three sentences on what the team chose
@@ -97,12 +101,13 @@ Both laptops now build features. **Features are a queue, not an assignment.**
 - Typically the lead lands features 2 and 4 while the other developer lands 1
   and 3. Nobody is idle and nobody is blocked waiting for an assignment.
 
-**Per-feature loop** (a fresh Copilot Chat session per feature — old context
-actively hurts):
+**Per-feature loop.** Open a **fresh chat session** for each feature, then pick
+**feature** from the agent dropdown and give it the feature name and its
+one-line scope from `PLAN.md`. (No dropdown? Use `/new-page` instead.)
 
-```
-/new-page   route: (feature)/<name>   purpose: <the one-line scope from PLAN.md>
-```
+Fresh session per feature is not hygiene, it is load-bearing: after roughly ten
+turns a session starts contradicting its own earlier decisions and breaking
+things that already worked. Old context does not accumulate into wisdom.
 
 Then read what it produced before committing. That is the navigator's job.
 
@@ -215,7 +220,11 @@ Repo link · live URL · backup video · the Copilot story. Submit at T+145.
 - **Never add a dependency.**
 - **Read Copilot output before committing it.** Navigator's job. Unreviewed
   generated code is how you end up debugging at T+130.
-- **Fresh chat session per feature.** Stale context degrades output badly.
+- **Fresh chat session per feature**, and one coherent slice per request. Never
+  "build the whole feature" in one turn.
+- **Never paste a token or credential into a prompt.** Prompts can be logged and
+  retained — treat a pasted secret as a published one. The model token belongs
+  in `.env.local` and in Vercel's env settings, nowhere else.
 - **If Copilot is slow or rate-limited, write it by hand.** Never wait on a
   tool — there are seven developers in the room.
 

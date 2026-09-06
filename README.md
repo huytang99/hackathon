@@ -31,10 +31,10 @@ starts with the dress rehearsal, which is worth more than this whole repo ·
 ## How the day actually runs
 
 1. **T+0–5** — topic drops, 3 minutes silent idea writing, lead picks one.
-2. **T+5–12** — run `/kickoff` in Copilot Chat with the topic and the idea. It
-   fills in `PLAN.md`: three golden-path steps, a 3–5 feature queue, and the
-   shared types block. **The team reads it aloud and fixes it by hand** — that
-   review is where the value is. Lead pastes the types and pushes.
+2. **T+5–12** — pick the **plan** agent in Copilot Chat, give it the topic and
+   the idea. It fills in `PLAN.md`: three golden-path steps, a 3–5 feature
+   queue, and the shared types block. **The team reads it aloud and fixes it by
+   hand** — that review is where the value is. Lead pastes the types and pushes.
 3. **T+12–25** — lead builds the spine alone: theme, delete unused archetypes,
    and scaffold a stub page plus nav link for *every* planned feature. Deploy.
    Live URL by T+25.
@@ -85,7 +85,15 @@ grey, Geist, `0.625rem` radius, shadowed cards — *is* the recognisable
 "AI-generated app" look. These move colour, font and radius off the defaults
 together, which is what reads as designed. Chart colours follow automatically.
 
-**Five prompt files** in `.github/prompts/`: `kickoff` (T+5, produces the plan),
+**Two custom agents** in `.github/agents/`, picked from the agent dropdown in
+Copilot Chat so nobody has to remember a command: **plan** (T+5 — cannot write
+application code, only `PLAN.md`, so the model can't start building while you're
+still deciding) and **feature** (T+25–90 — builds one feature inside its own
+folder). Each has a handoff button to the next step. They're thin wrappers that
+*reference* the prompt files rather than restating them, so there's nothing to
+drift, and if your VS Code predates custom agents the prompts still work.
+
+**Five prompt files** in `.github/prompts/`: `kickoff` (produces the plan),
 `new-page` (build one feature end to end), `seed-data`, `polish-ui`, `fix-build`.
 
 **`app/api/ai/route.ts`** — the only server file, existing purely to keep a model

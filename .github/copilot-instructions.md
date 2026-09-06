@@ -5,11 +5,52 @@ production robustness. Prefer the boring, working option every time.
 
 This is the single source of truth. There are no other instruction files.
 
+## The product
+
+<!--
+  LEAD: fill these three lines at ~T+12, copied from PLAN.md §1. Two minutes,
+  and it is the highest-value edit you can make to this file — every Copilot
+  request in the repo reads it. Without it the model is guessing what it is
+  building. Delete this comment when you fill it in.
+-->
+
+- **What it is:** (placeholder — a starter, no product chosen yet)
+- **Who uses it:** ...
+- **The three things a user must be able to do:** see `PLAN.md` §2
+
 ## Stack (already installed — do not change)
 
 Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS v4 ·
 shadcn/ui (Radix primitives) · lucide-react · recharts · zustand · zod ·
 date-fns · sonner · Vercel AI SDK.
+
+## Where things live
+
+```
+app/layout.tsx        shell + fonts + theme class     (lead)
+app/page.tsx          hero / landing screen           (lead)
+app/(core)/           the four archetypes to copy     (lead)
+app/(feature)/<name>/ one folder per feature          (that feature's owner)
+app/api/ai/route.ts   the ONLY server file
+components/ui/        22 shadcn components            (never edit)
+components/shell/     nav, page header, theme toggle  (lead)
+components/signature/ MeshBackdrop, DisplayStat, RuledPanel
+components/feature/   feature-specific components
+lib/types.ts          SHARED types only               (lead writes)
+lib/store.ts          zustand store — all data access
+lib/ai.ts             client helper for /api/ai
+data/seed.json        seed data                       (content owner)
+```
+
+## Scripts and resources
+
+- `npm run dev` — dev server on :3000
+- `npm run verify` — **typecheck + build. This is the definition of done.**
+- `npm run format` — prettier
+
+Reusable prompts live in `.github/prompts/`: `kickoff` (produce the plan),
+`new-page` (build one feature), `seed-data`, `polish-ui`, `fix-build`.
+Prefer running one of those over improvising a long prompt.
 
 ## Rule 1 — This app runs in SPA mode
 
@@ -117,6 +158,32 @@ config change — **print what is needed and stop.** Do not edit it yourself.
 No authentication or login. No database, ORM, Prisma, SQL or migrations. No
 Docker. No tests unless asked. No i18n. No error-boundary scaffolding. No
 `README` rewrites. No abstraction layers "for later" — there is no later.
+
+## Rule 8 — Never handle a secret
+
+- **Never write a real token, key or credential into any file**, including
+  examples and comments. Use `process.env.NAME` and document the variable in
+  `.env.example`.
+- `.env.local` is gitignored and must stay that way. Never read it into a file
+  that gets committed, and never echo its contents.
+- If a task appears to need a credential, say so and stop.
+
+Humans: do not paste a token into a chat prompt either. Prompts can be logged
+and retained, so a pasted token should be treated as a published one.
+
+## Rule 9 — Work in small steps
+
+The dominant failure mode of AI-assisted building is drift: after roughly ten
+turns in one session the model starts contradicting its own earlier decisions,
+and features that worked break as new ones land. Guard against it structurally.
+
+- One request should produce **one coherent slice** — a page, a section, a fix.
+  Never "build the whole feature" in a single turn.
+- Run `npm run verify` after each slice, before moving on.
+- **Start a fresh chat session for each new feature.** Stale context actively
+  degrades output; it does not accumulate into wisdom.
+- If you notice you are undoing your own earlier work, stop and say so rather
+  than continuing to patch.
 
 ## Data conventions
 
