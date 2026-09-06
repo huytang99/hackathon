@@ -9,7 +9,7 @@ import { ThemeToggle } from "@/components/shell/theme-toggle";
 /**
  * The app frame: wordmark, primary nav, theme toggle, content well.
  *
- * Station A owns this file. If Station B needs a nav entry, they ask — a
+ * The lead owns this file. If a feature developer needs a nav entry, they ask — a
  * second person editing the nav is the most common merge conflict there is.
  *
  * On contest day: edit NAV to match the topic, delete the entries you are not

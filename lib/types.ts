@@ -1,15 +1,22 @@
 /**
- * THE CONTRACT.
+ * SHARED TYPES ONLY.
  *
- * This file is owned by Station A (the lead) and by nobody else. At ~T+8 on
- * contest day the lead replaces the placeholder `Item` below with the real
- * entities for the topic, adds any function signatures both stations need,
- * and pushes. From that moment both stations code against real types and
- * their generated code integrates without negotiation.
+ * This file has one narrow job: stop two developers' Copilot sessions
+ * inventing two different shapes for the same thing. It is NOT a model of the
+ * whole domain, and it is NOT meant to be finished early.
+ *
+ * What belongs here: types that MORE THAN ONE feature touches. Usually the core
+ * entity, its status union, and the store surface. Aim for under 25 lines.
+ *
+ * What does NOT belong here: anything a single feature owns. Those live in
+ * `app/(feature)/<feature>/types.ts`. Domain models emerge while you code —
+ * that is normal, and forcing them in here early is how you get it wrong.
  *
  * Rules:
- *   - Every shared shape lives here. Nothing is redeclared elsewhere.
- *   - Only the lead edits this file. Everyone else reads it.
+ *   - Only the lead writes this file. Everyone else reads it and asks.
+ *   - Amendments during the build are EXPECTED, several times. Someone says
+ *     "I need a dueDate on Item", the lead adds it and pushes inside a minute.
+ *     That is the normal path, not a failure of planning.
  *   - Keep it flat and boring. No generics, no unions of unions, no `unknown`.
  */
 

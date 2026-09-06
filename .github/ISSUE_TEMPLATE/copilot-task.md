@@ -35,10 +35,10 @@ labels: ["copilot-agent"]
 ## Files you MUST NOT touch
 
 - `lib/types.ts` — the shared contract, owned by the lead
-- `app/layout.tsx` and `components/shell/**` — the shell, owned by Station A
+- `app/layout.tsx` and `components/shell/**` — the shell, owned by the lead
 - `components/ui/**` — vendored shadcn components
 - `package.json` — never add a dependency
-- Anything under `app/(feature)/**` — owned by Station B, in active use
+- Anything under `app/(feature)/**` — owned by a feature developer, in active use
 
 ## Rules
 

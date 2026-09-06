@@ -1,29 +1,50 @@
 ---
 mode: agent
-description: Create a new page from the closest archetype, wired to the store.
+description: Build one feature from the queue, end to end, inside its own folder.
 ---
 
-Create a new page at `app/(feature)/${input:route}` for: ${input:purpose}
+Build the feature `${input:feature}` at `app/(feature)/${input:feature}/`.
 
-Read `.github/copilot-instructions.md` first and obey it.
+Its scope, from `PLAN.md`: ${input:purpose}
 
-Steps:
+Read `.github/copilot-instructions.md` and `PLAN.md` first. Obey every rule,
+especially SPA mode, theme tokens only, no new dependencies, and the folder
+ownership map.
 
-1. Pick the closest archetype and say which one you picked and why:
-   - `app/(core)/requests/page.tsx` — browsing or managing records
-   - `app/(core)/insights/page.tsx` — trends, totals, health
-   - `app/(core)/assistant/page.tsx` — conversational or AI-assisted
-   - `app/(core)/submit/page.tsx` — intake, application, configuration
-2. Copy it, then adapt. Do not write a page from scratch.
-3. Use `PageHeader` from `@/components/shell/app-shell` for the title block so
-   spacing matches every other page.
-4. Read data via `useStore` from `@/lib/store`. Never import `data/seed.json`
-   directly.
-5. Include an empty state and a `<Skeleton />` loading state.
-6. Theme tokens only. No `bg-slate-*`, no hex, no `shadow-*` on cards.
+## Steps
 
-Stay entirely inside `app/(feature)/` and `components/feature/`. If you need a
-nav link or a change to `lib/types.ts`, print what is needed and stop — someone
-else owns those files.
+1. **Pick the archetype** from the table in the instructions file and say which
+   one you picked and why. Copy that file, then adapt it. **Do not write a page
+   from scratch** — the archetypes already handle search, filtering, tables,
+   detail drawers, empty states and validation.
 
-Finish by running `npm run verify`.
+2. **Types.** Read `lib/types.ts` for the shared shapes and use them as-is.
+   - Types **only this feature** uses go in
+     `app/(feature)/${input:feature}/types.ts`. That is the normal case.
+   - If you genuinely need a change to a **shared** type, print the exact block
+     and stop. Do not edit `lib/types.ts`.
+
+3. **Data.** Read and mutate only through `useStore` from `@/lib/store`. Never
+   import `data/seed.json` directly. If this feature needs new seed records,
+   print them for the Content owner rather than editing `data/seed.json`.
+
+4. **Build the page.** Use `PageHeader` from `@/components/shell/app-shell` for
+   the title block so spacing matches every other page. Include an empty state
+   and a `<Skeleton />` loading state.
+
+5. **Verify.** Run `npm run verify` and fix anything it reports.
+
+## Boundaries
+
+Write only inside `app/(feature)/${input:feature}/` and
+`components/feature/${input:feature}/`.
+
+The page shell and its nav link already exist — the lead scaffolded them. If
+this task appears to need anything outside your folder (routing, the nav, the
+shell, config, shared types, seed data), **print what is needed and stop.**
+
+## Report back
+
+- Which archetype you copied
+- Anything you need from the lead, as a paste-ready block
+- Anything in the scope you deliberately did not build

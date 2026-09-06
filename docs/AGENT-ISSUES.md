@@ -63,7 +63,7 @@ Batch 3 (file at ~T+70, only if the first two batches landed clean): 7, 8.
 ## 4. About page
 
 > Add `app/(core)/about/page.tsx` describing what this product does and who it
-> is for, based on `SPEC.md`. Use `PageHeader` from
+> is for, based on `PLAN.md`. Use `PageHeader` from
 > `@/components/shell/app-shell`. Three short sections, no marketing language,
 > no invented statistics. Print the nav entry for the lead to add — do not edit
 > `components/shell/app-shell.tsx`.
@@ -82,7 +82,7 @@ Batch 3 (file at ~T+70, only if the first two batches landed clean): 7, 8.
 ## 6. README
 
 > Rewrite `README.md` for `<TOPIC>`: what the product does, the three-step user
-> journey from `DEMO.md`, how to run it locally, the architecture in five
+> journey from the demo script in `PLAN.md`, how to run it locally, the architecture in five
 > bullets, and how GitHub Copilot was used to build it. Under 400 words. No
 > badges, no emoji, no invented benchmarks.
 >
@@ -112,7 +112,7 @@ Batch 3 (file at ~T+70, only if the first two batches landed clean): 7, 8.
 
 - Anything on the demo golden path — you cannot wait 10 minutes for it.
 - Anything requiring a `lib/types.ts` change.
-- Anything in `app/(feature)/**` while Station B is working there.
+- Anything in `app/(feature)/**` while a feature developer is working there.
 - Vague quality requests ("make it better", "refactor this") — these produce
   huge unreviewable diffs.
 - Adding a dependency. Ever.

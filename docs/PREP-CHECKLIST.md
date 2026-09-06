@@ -72,7 +72,7 @@ common way this plan degrades.
 
 - [ ] All 8 added as repo collaborators
 - [ ] All 8 roles assigned **by name** in `RUNBOOK.md`
-- [ ] Everyone has read `RUNBOOK.md` and `CUT-LADDER.md`
+- [ ] Everyone has read `RUNBOOK.md` (it is the only contest-day doc)
 - [ ] Timekeeper appointed deliberately — someone willing to interrupt the lead
 - [ ] Both navigators walked through `.github/prompts/` so they know what exists
 - [ ] Content owner has used the GitHub web editor on their phone once

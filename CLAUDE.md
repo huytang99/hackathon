@@ -9,7 +9,8 @@ Quick summary for cloud agents picking up an issue:
 
 - Everything is client-side. `"use client"` at the top of every page. No server
   actions, no server-component data fetching. The only server file is `app/api/ai/route.ts`.
-- Shared types live in `lib/types.ts`. Read them; never edit them.
+- Shared types live in `lib/types.ts` — read them, never edit them. Types that
+  only your own feature uses belong in your feature folder, not there.
 - Never add a dependency. Everything you need is installed.
 - Colours come from theme tokens only (`bg-background`, `bg-primary`, `text-muted-foreground`).
   Never `bg-slate-*`, never hex, never `shadow-*` on a card.

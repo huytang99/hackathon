@@ -1,146 +1,236 @@
-# Contest-day runbook — 150 minutes
+# Runbook — 150 minutes
 
-**Everyone reads this before the day. The Timekeeper runs it on the day.**
+**The only file anyone reads on contest day.** The other one is `PLAN.md`, which
+you fill in rather than read.
 
-Constraints this is built around: **2 laptops, 2 Copilot Business seats
-(~$100 credits each), 8 people, open internet, public deploy allowed.**
+Built for: **2 laptops · 2 Copilot Business seats · 8 people · open internet ·
+public deploy allowed · topic at T+0.**
 
-The binding constraint is **keyboards, not licences and not credits**. Every
-decision below either (a) keeps both keyboards generating code, or (b) moves
-work off a keyboard entirely — onto the cloud coding agent, onto phones, or onto
-a person's head.
-
-Organising principle: **feature freeze at T+90**, which is 60% of the clock.
-Losing the demo costs more than shipping one fewer feature.
+The binding constraint is **keyboards**, not licences, headcount or credits.
+So every rule below either keeps both keyboards generating code, or moves work
+off a keyboard entirely — to the cloud agent, to phones, or to someone's head.
 
 ---
 
-## T+0 → T+8 · Converge (all 8)
+## T+0 → T+5 · Pick one idea
 
-- Topic drops. **3 minutes of silent individual writing** on paper or phones.
-  No discussion. This is deliberate: it gets eight brains contributing in a room
-  with two keyboards, and stops the loudest voice from setting direction.
-- Lead reads all eight, picks **one**. Not a vote — a decision.
-- Run `TOPIC-TRIAGE.md` out loud. Four questions, three minutes.
-- Write the **three golden-path steps** into `DEMO.md`.
+Whole team. No laptops open.
 
-Rule from here on: **not in the three steps → not built.**
+1. **3 minutes silent writing.** Everyone writes their idea on paper or a phone.
+   No discussion. This gets eight brains contributing in a room with two
+   keyboards, and stops the loudest voice setting direction.
+2. Lead reads all eight aloud, picks **one**. A decision, not a vote.
 
-## T+8 → T+15 · Lock the contract, get a URL live
+## T+5 → T+12 · One prompt produces the plan
 
-Everything in this window happens in parallel.
+**This is the whole planning phase.** Lead on laptop 1, Copilot Chat in agent
+mode, Navigator A reading over their shoulder.
 
-| Who | Does |
+Run the `kickoff` prompt — in Copilot Chat, type `/kickoff`, or attach
+`.github/prompts/kickoff.prompt.md`. It asks for two inputs:
+
+- `topic` — paste the announced topic verbatim
+- `idea` — two or three sentences on what the team chose
+
+It rewrites `PLAN.md` with: the product sentence, **three golden-path steps**,
+which archetype each screen copies, a **3–5 feature queue** with folders and
+owners, the **shared types block**, the AI yes/no call, and the theme.
+
+Then, and this is the part that matters:
+
+3. **Read it on screen as a group. Out loud.** Two minutes.
+4. **Fix what is wrong by hand.** It will get something wrong — usually it
+   over-scopes the feature queue, or invents a type nobody needs. Cutting is
+   faster than regenerating. Do not re-run the prompt.
+5. Lead pastes the shared types block into `lib/types.ts`.
+6. Commit and push:
+
+```bash
+git add -A && git commit -m "Plan and shared types" && git push
+```
+
+Why one prompt instead of a planning framework: 150 minutes does not survive a
+`specify → plan → tasks → implement` loop. This gets you a reviewed, committed
+plan in seven minutes, and the reviewing is the part that adds the value.
+
+## T+12 → T+25 · Lead builds the spine, alone
+
+Nobody else writes code yet. This is short, and it is what makes the next 65
+minutes conflict-free.
+
+Lead does, in this order:
+
+1. **Set the theme** class on `<html>` in `app/layout.tsx` (from `PLAN.md` §7).
+2. **Delete the archetypes you are not using** and the signpost section at the
+   bottom of `app/page.tsx`.
+3. **Scaffold every planned feature folder now** — for each row of the feature
+   queue, create `app/(feature)/<name>/page.tsx` containing a stub that renders
+   a `PageHeader` and nothing else, and add its nav entry to
+   `components/shell/app-shell.tsx`.
+4. **Deploy.** Live URL by T+25.
+
+```bash
+npm run verify && git add -A && git commit -m "Spine + feature scaffolds" && git push
+```
+
+**Step 3 is the highest-value ten minutes of the day.** Because every feature
+folder and every nav link already exists, no feature owner ever needs to touch
+the shell or routing — which removes the single largest source of merge
+conflicts before it can happen.
+
+Meanwhile, off-keyboard:
+
+| Who | Doing |
 | --- | --- |
-| **Lead (Station A)** | Writes **all** of `lib/types.ts` — every entity, every signature both stations need, stubs returning seed data. Pushes. This is the single most important action of the day. |
-| **Lead, then** | Picks the theme class in `app/layout.tsx`. Deploys. **Live URL by T+15.** |
-| **Station B** | Clones, `npm ci`, confirms `npm run dev`. Reads `SPEC.md`. Does **not** start coding until types land. |
-| **Content owner** | Starts real seed data in `data/seed.json` via the GitHub web editor **on a phone**. |
-| **Agent Wrangler** | Files batch 1 from `docs/AGENT-ISSUES.md` (issues 1, 2, 6) and assigns them to Copilot. |
-| **Demo Owner** | Fills in `DEMO.md`, including the opening line. |
-| **Timekeeper** | Starts the clock. Announces every checkpoint from `CUT-LADDER.md`. |
+| Demo Owner | Writes the demo script at the bottom of `PLAN.md` |
+| Content owner | Real seed data in `data/seed.json` via GitHub's web editor **on a phone** |
+| Agent Wrangler | Files issues 1, 2 and 6 from `docs/AGENT-ISSUES.md`, assigns to Copilot |
+| Timekeeper | Starts the clock, reads the checkpoint scripts below |
 
-Why types before code: it is what makes two independent Copilot sessions
-produce code that fits together. A shared prose plan does not do this — nothing
-stops the model inventing divergent shapes. A committed types file does.
+## T+25 → T+90 · Build the queue
 
-## T+15 → T+90 · Build
+Both laptops now build features. **Features are a queue, not an assignment.**
 
-Two stations. **Rotate driver and navigator every 25 minutes** — the Timekeeper
-calls it, not the driver. Four rotations cycles four people through the
-keyboards and prevents tunnel vision.
+- Take the top unclaimed row of `PLAN.md` §4. Write your name in Owner.
+- Build only inside `app/(feature)/<your-feature>/`. Never outside it.
+- When done, mark it, push, take the next unclaimed row.
+- Typically the lead lands features 2 and 4 while the other developer lands 1
+  and 3. Nobody is idle and nobody is blocked waiting for an assignment.
 
-Each rotation is also an **integration checkpoint**:
+**Per-feature loop** (a fresh Copilot Chat session per feature — old context
+actively hurts):
 
 ```
+/new-page   route: (feature)/<name>   purpose: <the one-line scope from PLAN.md>
+```
+
+Then read what it produced before committing. That is the navigator's job.
+
+**Every 25 minutes, rotate driver and navigator.** Timekeeper calls it, not the
+driver. Four rotations cycles four people through the keyboards. Each rotation
+is also the integration checkpoint:
+
+```bash
 git pull --rebase && npm run verify && git push
 ```
 
-…then click the golden path once, end to end. Four cheap checks beat one
-expensive merge at T+100.
+…then click the golden path once, end to end. Announce pushes out loud:
+*"pushing, pull in thirty."*
 
-- **T+45 checkpoint.** Golden path clickable end to end, even on fake data? If
-  no, cut rungs 1–2 of the ladder now.
-- **T+70 checkpoint.** Everything outside the three steps stops.
-- Lead merges cloud-agent PRs as they land — squashed, into a green `main` only.
-- Agent Wrangler files batch 2 at ~T+45 once types are stable.
+### What the lead is doing besides features
+
+Three standing duties, interrupt-driven, maybe 15 minutes total across the
+whole window:
+
+- **Types amendments.** Someone says "I need a `dueDate` on `Item`." Lead adds
+  it and pushes inside a minute. Expect this five to ten times. It is the
+  normal path.
+- **Merging cloud-agent PRs** — squashed, into a green `main`, only files no
+  feature owner holds.
+- **Nav and route additions** the plan did not anticipate.
+
+So the lead's day is: spine (13 min) → roughly half the features → integration
+duty throughout. Not supervision.
+
+### Checkpoints — Timekeeper reads these verbatim
+
+**T+45** — *"Can we click all three golden-path steps right now, even on fake
+data? If no, we cut from the ladder immediately."*
+
+**T+70** — *"Everything not in the three steps stops now. Name what you are
+still building. If it is not in `PLAN.md`, close the file."*
+
+**T+90** — *"Feature freeze. Nothing new. Polish, seed data, empty states only.
+Demo Owner starts recording."*
+
+**T+105** — *"Both laptops stop pushing. Rehearsal one starts now."*
+
+### The cut ladder — decided now so cuts are unemotional later
+
+Drop in this order. The Timekeeper has authority to invoke it, including on the
+lead's own work.
+
+1. Authentication or login — never build it, not even a fake screen
+2. Settings, admin, profile — nobody demos settings
+3. The last feature in the queue, then the second-last
+4. Edit and delete (keep create and read — a demo rarely edits)
+5. Mobile layout (the starter is already responsive, so usually free — keep it)
+6. Real AI calls → switch to the canned answers in `lib/ai-fallback.ts`
+7. Charts → fall back to a `DisplayStat` from `@/components/signature`
+8. The third golden-path step — two steps done well beats three where one breaks
+
+**Never cut:** the hero screen polish · golden-path steps 1 and 2 · seed-data
+realism · the backup video · the T+90 freeze.
 
 ## T+90 · FEATURE FREEZE
 
-Timekeeper calls it. Non-negotiable, and cannot be moved.
+Non-negotiable. Cannot be moved, only enforced.
 
-Both stations switch to polish only: realistic seed data, empty states, loading
-skeletons, spacing, and the hero screen. Run the `polish-ui` prompt file on the
-hero screen first.
+Both laptops switch to polish. Run `/polish-ui` on the showpiece screen first,
+then the hero screen.
 
 ## T+90 → T+105 · Backup video
 
-Demo Owner records the full golden path against the **live URL**, and downloads
-the file locally. This is insurance against dead conference wifi during judging.
+Demo Owner records the full golden path against the **live URL** and saves the
+file locally. Insurance against dead venue wifi during judging.
 
 Skipping this to gain 15 minutes of build time is the highest-regret decision
 available to you.
 
 ## T+105 → T+130 · Rehearse twice
 
-On the actual machine, on the actual network, with the actual projector if you
-can get to it. Both stations stop pushing at T+105.
-
-Fix **only** demo-breaking bugs. Nothing else. A bug the judge will never see
-does not exist.
+Real machine, real network, real projector if you can reach it. Both laptops
+stop pushing at T+105. Fix **only** demo-breaking bugs — a bug the judge will
+never see does not exist.
 
 ## T+130 → T+140 · The Copilot story
 
-Agent Wrangler assembles it from the log kept throughout — this is a 10-minute
-collection job, not a work block, because the artefacts already exist as a
-byproduct of how you worked:
+Agent Wrangler collects, from the log kept throughout — a 10-minute collection
+job, not a work block, because these artefacts already exist as a byproduct:
 
-- `.github/copilot-instructions.md` and the scoped `instructions/` files
+- `.github/copilot-instructions.md` — how we kept two AI sessions consistent
 - `.github/prompts/*.prompt.md` — reusable prompts, not ad-hoc chat
 - The cloud-agent PRs merged, with issue links
-- One honest sentence on what was delegated to Copilot vs. written by hand
+- One honest sentence on what was delegated vs. hand-written
 
 **No slide deck.** A README section or three slides maximum — slides compete for
 a laptop you do not have.
 
-## T+140 → T+150 · Buffer and submit
+## T+140 → T+150 · Submit
 
-Repo link · live URL · backup video · the Copilot story. Submit at T+145, not
-T+150.
+Repo link · live URL · backup video · the Copilot story. Submit at T+145.
 
 ---
 
 ## Standing rules
 
-- **Both stations commit to `main` directly.** No branch protection, no required
-  reviews. At two stations, PR gates cost more than they catch. The only PRs are
-  the cloud agent's, and the lead merges those.
-- **`npm run verify` before every push.** A red `main` blocks the other station,
-  which is the most expensive thing that can happen.
-- **`lib/types.ts` is the lead's alone.** Need a change? Say it out loud; it is
-  pushed in 30 seconds. Never let two agents edit types.
-- **Need a nav link or a route?** Ask Station A. Do not add it yourself. Costs
-  20 seconds, prevents the worst conflict class there is.
-- **Never add a dependency.** Everything plausible is pre-installed.
-- **Read Copilot output before committing it.** The navigator's job. Unreviewed
+- **Both laptops commit to `main` directly.** No branch protection, no reviews.
+  At two stations, PR gates cost more than they catch. The only PRs are the
+  cloud agent's; the lead merges those.
+- **`npm run verify` before every push.** A red `main` blocks the other
+  developer — the most expensive thing that can happen.
+- **Only the lead writes `lib/types.ts`.** Everyone else asks. It takes a minute.
+- **Never touch a folder you do not own.** Need a nav link or a route? Ask the
+  lead. Twenty seconds, and it prevents the worst conflict class there is.
+- **Never add a dependency.**
+- **Read Copilot output before committing it.** Navigator's job. Unreviewed
   generated code is how you end up debugging at T+130.
+- **Fresh chat session per feature.** Stale context degrades output badly.
 - **If Copilot is slow or rate-limited, write it by hand.** Never wait on a
   tool — there are seven developers in the room.
-- **Announce pushes out loud.** "Pushing, pull in thirty."
 
 ## Roles
 
-| Role | Who | Keyboard? |
+| Role | Who | Keyboard |
 | --- | --- | --- |
-| Station A driver — the Spine | (lead) | yes |
-| Station B driver — the Hook | | yes |
-| Navigator A | | no — writes the next prompt, reviews output |
-| Navigator B | | no — same |
-| Timekeeper / Scope Cop | | no — owns the clock, **can cut the lead's features** |
-| Demo Owner / QA | | phone — tests live URL, owns `DEMO.md`, speaks |
-| Content / Seed Data | | phone — owns `data/seed.json` alone |
+| Lead — spine, then features, plus integration | | laptop 1 |
+| Developer — features off the queue | | laptop 2 |
+| Navigator ×2 | | no — writes the next prompt, reviews output |
+| Timekeeper / Scope Cop | | no — owns the clock, **can cut the lead's work** |
+| Demo Owner / QA | | phone — tests the live URL, owns the demo script, speaks |
+| Content / Seed data | | phone — owns `data/seed.json` alone |
 | Agent Wrangler | | phone — files and reviews cloud-agent issues |
 
-Pick the Timekeeper deliberately: it must be someone willing to interrupt the
-lead. The lead is holding a Copilot seat and coding, so the clock has to belong
-to someone else.
+Navigators and drivers swap every 25 minutes, so four people touch the
+keyboards. Pick the Timekeeper deliberately: the lead is coding, so the clock
+must belong to someone willing to interrupt them.
