@@ -1,9 +1,18 @@
-<!-- BEGIN:nextjs-agent-rules -->
+# AGENTS.md
 
-# This is NOT the Next.js you know
+All agent instructions for this repository live in **`.github/copilot-instructions.md`**.
+Read that file first and follow it exactly. It is the single source of truth for
+the stack, the SPA-mode rule, the theme-token rule, the no-new-dependencies rule,
+and the file-ownership map between the two developers working in parallel.
 
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+Quick summary for cloud agents picking up an issue:
 
-This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
-
-<!-- END:nextjs-agent-rules -->
+- Everything is client-side. `"use client"` at the top of every page. No server
+  actions, no server-component data fetching. The only server file is `app/api/ai/route.ts`.
+- Shared types live in `lib/types.ts`. Read them; never edit them.
+- Never add a dependency. Everything you need is installed.
+- Colours come from theme tokens only (`bg-background`, `bg-primary`, `text-muted-foreground`).
+  Never `bg-slate-*`, never hex, never `shadow-*` on a card.
+- Reuse `components/ui/**` (22 shadcn components). Never edit them.
+- Stay inside the directories the issue names. Do not touch files it excludes.
+- Done means `npm run verify` passes.

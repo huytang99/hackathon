@@ -1,0 +1,221 @@
+{
+  "appName": "Relay",
+  "appTagline": "Internal requests, tracked end to end",
+  "items": [
+    {
+      "id": "req-1041",
+      "title": "Warehouse scanner firmware rollback",
+      "description": "Units on the Leeds floor are dropping barcode reads after the 4.2 update. Roll back to 4.1.7 across all 38 handsets.",
+      "status": "active",
+      "owner": "Priya Raman",
+      "tags": ["hardware", "urgent"],
+      "value": 12400,
+      "createdAt": "2026-08-28"
+    },
+    {
+      "id": "req-1042",
+      "title": "Contractor onboarding takes 9 days",
+      "description": "Background check and laptop provisioning run sequentially. Overlap them to get new contractors productive inside a week.",
+      "status": "new",
+      "owner": "Tomas Lindqvist",
+      "tags": ["process", "people"],
+      "value": 8600,
+      "createdAt": "2026-09-01"
+    },
+    {
+      "id": "req-1043",
+      "title": "Duplicate invoices from the Rotterdam supplier",
+      "description": "Finance matched 14 duplicate payments last quarter. Needs a dedupe check before payment release.",
+      "status": "blocked",
+      "owner": "Aisha Bello",
+      "tags": ["finance", "integration"],
+      "value": 47200,
+      "createdAt": "2026-08-19"
+    },
+    {
+      "id": "req-1044",
+      "title": "Night shift cannot reset their own passwords",
+      "description": "Helpdesk closes at 18:00 so night shift waits until morning. 60+ tickets a month, all the same.",
+      "status": "active",
+      "owner": "Marcus Oyelaran",
+      "tags": ["access", "quick-win"],
+      "value": 5100,
+      "createdAt": "2026-08-30"
+    },
+    {
+      "id": "req-1045",
+      "title": "Consolidate the three shipping dashboards",
+      "description": "Ops, Finance and the depot managers each maintain their own version and the numbers disagree by about 4%.",
+      "status": "new",
+      "owner": "Hannah Whitfield",
+      "tags": ["reporting", "data"],
+      "value": 21800,
+      "createdAt": "2026-09-03"
+    },
+    {
+      "id": "req-1046",
+      "title": "Forklift inspection log is still on paper",
+      "description": "Compliance needs 12 months of history retrievable in under a minute. Currently a binder in the depot office.",
+      "status": "done",
+      "owner": "Priya Raman",
+      "tags": ["compliance", "mobile"],
+      "value": 9900,
+      "createdAt": "2026-07-14"
+    },
+    {
+      "id": "req-1047",
+      "title": "Returns portal rejects valid order numbers",
+      "description": "Orders placed before the migration use a 7-character reference the portal regex does not accept.",
+      "status": "active",
+      "owner": "Diego Marchetti",
+      "tags": ["customer", "bug"],
+      "value": 16300,
+      "createdAt": "2026-08-25"
+    },
+    {
+      "id": "req-1048",
+      "title": "Approval chain stalls on annual leave",
+      "description": "Requests over 10k need a director signature with no delegate configured. Median wait during August was 11 days.",
+      "status": "blocked",
+      "owner": "Tomas Lindqvist",
+      "tags": ["process", "urgent"],
+      "value": 33500,
+      "createdAt": "2026-08-11"
+    },
+    {
+      "id": "req-1049",
+      "title": "Stock counts drift between depots",
+      "description": "Manual transfers are logged at the sending depot but not the receiving one. Reconciliation eats two days a month.",
+      "status": "new",
+      "owner": "Aisha Bello",
+      "tags": ["data", "inventory"],
+      "value": 27400,
+      "createdAt": "2026-09-04"
+    },
+    {
+      "id": "req-1050",
+      "title": "Driver app drains battery before end of route",
+      "description": "GPS polls every two seconds regardless of movement. Drivers carry power banks as a workaround.",
+      "status": "active",
+      "owner": "Marcus Oyelaran",
+      "tags": ["mobile", "field"],
+      "value": 14700,
+      "createdAt": "2026-08-21"
+    },
+    {
+      "id": "req-1051",
+      "title": "New starters cannot find the safety induction",
+      "description": "The induction lives on a SharePoint page nobody links to. 30% complete it late.",
+      "status": "done",
+      "owner": "Hannah Whitfield",
+      "tags": ["people", "quick-win"],
+      "value": 3200,
+      "createdAt": "2026-07-29"
+    },
+    {
+      "id": "req-1052",
+      "title": "Purchase orders exported by hand every Friday",
+      "description": "Someone copies 200 rows into a spreadsheet and emails it to the supplier. It has been wrong twice this year.",
+      "status": "new",
+      "owner": "Diego Marchetti",
+      "tags": ["automation", "finance"],
+      "value": 18900,
+      "createdAt": "2026-09-02"
+    },
+    {
+      "id": "req-1053",
+      "title": "Cold chain alerts go to a shared inbox",
+      "description": "Temperature excursions email a mailbox nobody owns overnight. Two spoilage incidents last quarter.",
+      "status": "active",
+      "owner": "Priya Raman",
+      "tags": ["urgent", "compliance"],
+      "value": 52000,
+      "createdAt": "2026-08-16"
+    },
+    {
+      "id": "req-1054",
+      "title": "Vendor risk reviews have no reminder",
+      "description": "Annual reviews are tracked in a personal calendar. Four lapsed without anyone noticing.",
+      "status": "blocked",
+      "owner": "Aisha Bello",
+      "tags": ["compliance", "process"],
+      "value": 11200,
+      "createdAt": "2026-08-07"
+    },
+    {
+      "id": "req-1055",
+      "title": "Depot wifi drops at shift changeover",
+      "description": "Roughly 90 devices reconnect at once and the access points fall over for two minutes.",
+      "status": "new",
+      "owner": "Marcus Oyelaran",
+      "tags": ["hardware", "field"],
+      "value": 7800,
+      "createdAt": "2026-09-05"
+    },
+    {
+      "id": "req-1056",
+      "title": "Overtime is approved after it is worked",
+      "description": "No pre-approval step, so budget overruns surface in the month-end close.",
+      "status": "active",
+      "owner": "Tomas Lindqvist",
+      "tags": ["finance", "people"],
+      "value": 24600,
+      "createdAt": "2026-08-23"
+    },
+    {
+      "id": "req-1057",
+      "title": "Customer address changes do not reach the depot",
+      "description": "Updates land in the CRM but the pick list is generated from a nightly snapshot taken beforehand.",
+      "status": "new",
+      "owner": "Hannah Whitfield",
+      "tags": ["integration", "customer"],
+      "value": 19400,
+      "createdAt": "2026-09-01"
+    },
+    {
+      "id": "req-1058",
+      "title": "Damaged goods photos are lost in chat",
+      "description": "Drivers post to a group chat that rolls over. Claims later have no evidence attached.",
+      "status": "done",
+      "owner": "Diego Marchetti",
+      "tags": ["mobile", "customer"],
+      "value": 13100,
+      "createdAt": "2026-07-31"
+    },
+    {
+      "id": "req-1059",
+      "title": "Two systems disagree on who is a manager",
+      "description": "HR and the access system drift apart, so leavers keep approval rights for weeks.",
+      "status": "blocked",
+      "owner": "Aisha Bello",
+      "tags": ["access", "data"],
+      "value": 29800,
+      "createdAt": "2026-08-14"
+    },
+    {
+      "id": "req-1060",
+      "title": "No single view of a request once submitted",
+      "description": "Requesters email for updates because there is nowhere to look. Roughly 40 chase emails a week.",
+      "status": "active",
+      "owner": "Priya Raman",
+      "tags": ["reporting", "quick-win"],
+      "value": 15600,
+      "createdAt": "2026-08-27"
+    }
+  ],
+  "metrics": [
+    { "id": "m1", "label": "Open requests", "value": 62, "unit": "", "delta": 8.4 },
+    { "id": "m2", "label": "Median time to close", "value": 9, "unit": "days", "delta": -12.5 },
+    { "id": "m3", "label": "Blocked over 7 days", "value": 11, "unit": "", "delta": 37.5 },
+    { "id": "m4", "label": "Value in flight", "value": 431, "unit": "k", "delta": 5.2 }
+  ],
+  "series": [
+    { "label": "Mar", "value": 38, "secondary": 24 },
+    { "label": "Apr", "value": 44, "secondary": 29 },
+    { "label": "May", "value": 41, "secondary": 33 },
+    { "label": "Jun", "value": 52, "secondary": 31 },
+    { "label": "Jul", "value": 49, "secondary": 38 },
+    { "label": "Aug", "value": 58, "secondary": 41 },
+    { "label": "Sep", "value": 62, "secondary": 47 }
+  ]
+}

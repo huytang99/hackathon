@@ -1,0 +1,24 @@
+# Ownership map — enforced socially, not by branch protection.
+# Purpose: two Copilot sessions generating code at speed must never write the
+# same file. Keep this in sync with Rule 6 of .github/copilot-instructions.md.
+
+# --- Station A: "The Spine" (team lead) ---
+/app/layout.tsx          @station-a
+/app/page.tsx            @station-a
+/app/globals.css         @station-a
+/app/(core)/             @station-a
+/lib/                    @station-a
+/data/                   @station-a
+/components/shell/       @station-a
+/components/signature/   @station-a
+/package.json            @station-a
+/next.config.ts          @station-a
+/tsconfig.json           @station-a
+
+# --- Station B: "The Hook" (strongest dev) ---
+/app/(feature)/          @station-b
+/components/feature/     @station-b
+
+# --- Shared, read-only for both ---
+/components/ui/          @station-a @station-b
+/lib/types.ts            @station-a
