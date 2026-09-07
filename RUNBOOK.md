@@ -62,20 +62,39 @@ plan in seven minutes, and the reviewing is the part that adds the value.
 Nobody else writes code yet. This is short, and it is what makes the next 65
 minutes conflict-free.
 
-Dev 1 does, in this order:
+Dev 1 does, in this order. **The order matters** — step 1 is what unblocks
+Dev 2, so it comes before everything else.
 
-1. **Set the theme** class on `<html>` in `app/layout.tsx` (from `PLAN.md` §7).
-2. **Delete the archetypes you are not using** and the signpost section at the
+1. **Scaffold Dev 2's feature folder first, and push immediately.** Create
+   `app/(feature)/<dev2-feature>/page.tsx` with a stub that renders a
+   `PageHeader` and nothing else, add its nav entry to
+   `components/shell/app-shell.tsx`, and push. Two minutes.
+
+   ```bash
+   npm run verify && git add -A && git commit -m "Scaffold <feature>" && git push
+   ```
+
+   **Dev 2 pulls and starts building at ~T+15.** Without this they sit idle
+   until T+25, or worse, edit the shell themselves and collide with you.
+
+2. **Scaffold the remaining feature folders** the same way, all in one push.
+3. **Set the theme** class on `<html>` in `app/layout.tsx` (from `PLAN.md` §7).
+4. **Delete the archetypes you are not using** and the signpost section at the
    bottom of `app/page.tsx`.
-3. **Scaffold every planned feature folder now** — for each row of the feature
-   queue, create `app/(feature)/<name>/page.tsx` containing a stub that renders
-   a `PageHeader` and nothing else, and add its nav entry to
-   `components/shell/app-shell.tsx`.
-4. **Deploy.** Live URL by T+25.
+5. **Deploy.** Live URL by T+25.
 
 ```bash
 npm run verify && git add -A && git commit -m "Spine + feature scaffolds" && git push
 ```
+
+### What Dev 2 does between T+12 and T+15
+
+Only three minutes, so do not start a feature. Instead: read `PLAN.md`, decide
+which archetype your feature copies, and open a fresh Copilot Chat session with
+the **feature** agent selected so the context is warm. If the product uses
+runtime AI, rewrite the canned strings in `lib/ai-fallback.ts` for this topic —
+it is an isolated file nobody else touches, and it is the cheapest demo
+insurance in the repo.
 
 **Step 3 is the highest-value ten minutes of the day.** Because every feature
 folder and every nav link already exists, no feature owner ever needs to touch
