@@ -3,7 +3,7 @@ mode: agent
 description: T+5. Turn the topic and the chosen idea into a filled PLAN.md and the shared types block.
 ---
 
-The hackathon topic is: **${input:topic}**
+The topic is: **${input:topic}**
 
 The idea our team picked is: **${input:idea}**
 
@@ -39,7 +39,7 @@ Decide and state, concretely:
    one core entity, a status union, and the store surface. Aim for under 25
    lines. Explicitly list which types you are deliberately leaving out because
    they belong to a single feature. Do not edit `lib/types.ts` — print it for
-   the lead to paste.
+   Dev 1 to paste.
 
 6. **Runtime AI: yes or no.** Does the app itself need to call a model while a
    user is using it? If no, say which files to delete

@@ -4,7 +4,7 @@ One folder per feature from the queue in `PLAN.md`, and **one named owner per
 folder at a time**. The owner is the only person who writes in it. That single
 rule is what keeps two Copilot sessions from colliding at AI speed.
 
-The lead scaffolds every planned feature folder and its nav link at ~T+15, so
+Dev 1 scaffolds every planned feature folder and its nav link at ~T+15, so
 by the time you pick a feature off the queue, your page stub and nav entry
 already exist. You should never need to touch the shell or routing.
 

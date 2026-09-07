@@ -4,7 +4,7 @@ import { ThemeProvider as NextThemesProvider } from "next-themes";
 
 /**
  * Light/dark handling. `enableSystem` is deliberately off and the default is
- * light: on contest day you do not want the projector deciding whether your
+ * light: today you do not want the projector deciding whether your
  * demo is in dark mode.
  */
 export function ThemeProvider({ children }: { children: React.ReactNode }) {

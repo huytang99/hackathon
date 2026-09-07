@@ -1,6 +1,6 @@
 # PLAN
 
-**The only file the team fills in on contest day.** Generated at T+5 by running
+**The only file the team fills in today.** Generated at T+5 by running
 the `kickoff` prompt, then corrected by humans. Both Copilot sessions read it,
 so keep it short — a long plan dilutes the context rather than enriching it.
 
@@ -58,7 +58,7 @@ Deliberately left out of `lib/types.ts` (feature-local):
 
 - ...
 
-Amendments during the build (lead pastes, then pushes — expect several):
+Amendments during the build (Dev 1 pastes, then pushes — expect several):
 
 - [ ] ...
 

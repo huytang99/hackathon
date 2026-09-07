@@ -1,6 +1,6 @@
 # Runbook — 150 minutes
 
-**The only file anyone reads on contest day.** The other one is `PLAN.md`, which
+**The only file anyone reads today.** The other one is `PLAN.md`, which
 you fill in rather than read.
 
 Built for: **2 laptops · 2 Copilot Business seats · 8 people · open internet ·
@@ -19,11 +19,11 @@ Whole team. No laptops open.
 1. **3 minutes silent writing.** Everyone writes their idea on paper or a phone.
    No discussion. This gets eight brains contributing in a room with two
    keyboards, and stops the loudest voice setting direction.
-2. Lead reads all eight aloud, picks **one**. A decision, not a vote.
+2. Dev 1 reads all eight aloud, picks **one**. A decision, not a vote.
 
 ## T+5 → T+12 · One prompt produces the plan
 
-**This is the whole planning phase.** Lead on laptop 1, Copilot Chat in agent
+**This is the whole planning phase.** Dev 1 on laptop 1, Copilot Chat in agent
 mode, Navigator A reading over their shoulder.
 
 Pick **plan** from the agent dropdown in Copilot Chat. That mode cannot write
@@ -46,7 +46,7 @@ Then, and this is the part that matters:
 4. **Fix what is wrong by hand.** It will get something wrong — usually it
    over-scopes the feature queue, or invents a type nobody needs. Cutting is
    faster than regenerating. Do not re-run the prompt.
-5. Lead pastes the shared types block into `lib/types.ts`.
+5. Dev 1 pastes the shared types block into `lib/types.ts`.
 6. Commit and push:
 
 ```bash
@@ -57,12 +57,12 @@ Why one prompt instead of a planning framework: 150 minutes does not survive a
 `specify → plan → tasks → implement` loop. This gets you a reviewed, committed
 plan in seven minutes, and the reviewing is the part that adds the value.
 
-## T+12 → T+25 · Lead builds the spine, alone
+## T+12 → T+25 · Dev 1 builds the spine, alone
 
 Nobody else writes code yet. This is short, and it is what makes the next 65
 minutes conflict-free.
 
-Lead does, in this order:
+Dev 1 does, in this order:
 
 1. **Set the theme** class on `<html>` in `app/layout.tsx` (from `PLAN.md` §7).
 2. **Delete the archetypes you are not using** and the signpost section at the
@@ -98,7 +98,7 @@ Both laptops now build features. **Features are a queue, not an assignment.**
 - Take the top unclaimed row of `PLAN.md` §4. Write your name in Owner.
 - Build only inside `app/(feature)/<your-feature>/`. Never outside it.
 - When done, mark it, push, take the next unclaimed row.
-- Typically the lead lands features 2 and 4 while the other developer lands 1
+- Typically Dev 1 lands features 2 and 4 while Dev 2 lands 1
   and 3. Nobody is idle and nobody is blocked waiting for an assignment.
 
 **Per-feature loop.** Open a **fresh chat session** for each feature, then pick
@@ -122,19 +122,19 @@ git pull --rebase && npm run verify && git push
 …then click the golden path once, end to end. Announce pushes out loud:
 *"pushing, pull in thirty."*
 
-### What the lead is doing besides features
+### What Dev 1 is doing besides features
 
 Three standing duties, interrupt-driven, maybe 15 minutes total across the
 whole window:
 
-- **Types amendments.** Someone says "I need a `dueDate` on `Item`." Lead adds
+- **Types amendments.** Someone says "I need a `dueDate` on `Item`." Dev 1 adds
   it and pushes inside a minute. Expect this five to ten times. It is the
   normal path.
 - **Merging cloud-agent PRs** — squashed, into a green `main`, only files no
   feature owner holds.
 - **Nav and route additions** the plan did not anticipate.
 
-So the lead's day is: spine (13 min) → roughly half the features → integration
+So Dev 1's day is: spine (13 min) → roughly half the features → integration
 duty throughout. Not supervision.
 
 ### Checkpoints — Timekeeper reads these verbatim
@@ -152,8 +152,7 @@ Demo Owner starts recording."*
 
 ### The cut ladder — decided now so cuts are unemotional later
 
-Drop in this order. The Timekeeper has authority to invoke it, including on the
-lead's own work.
+Drop in this order. The Timekeeper has authority to invoke it, including on Dev 1's own work.
 
 1. Authentication or login — never build it, not even a fake screen
 2. Settings, admin, profile — nobody demos settings
@@ -211,12 +210,12 @@ Repo link · live URL · backup video · the Copilot story. Submit at T+145.
 
 - **Both laptops commit to `main` directly.** No branch protection, no reviews.
   At two stations, PR gates cost more than they catch. The only PRs are the
-  cloud agent's; the lead merges those.
+  cloud agent's; Dev 1 merges those.
 - **`npm run verify` before every push.** A red `main` blocks the other
   developer — the most expensive thing that can happen.
-- **Only the lead writes `lib/types.ts`.** Everyone else asks. It takes a minute.
+- **Only Dev 1 writes `lib/types.ts`.** Everyone else asks. It takes a minute.
 - **Never touch a folder you do not own.** Need a nav link or a route? Ask the
-  lead. Twenty seconds, and it prevents the worst conflict class there is.
+  Dev 1. Twenty seconds, and it prevents the worst conflict class there is.
 - **Never add a dependency.**
 - **Read Copilot output before committing it.** Navigator's job. Unreviewed
   generated code is how you end up debugging at T+130.
@@ -232,14 +231,14 @@ Repo link · live URL · backup video · the Copilot story. Submit at T+145.
 
 | Role | Who | Keyboard |
 | --- | --- | --- |
-| Lead — spine, then features, plus integration | | laptop 1 |
-| Developer — features off the queue | | laptop 2 |
+| Dev 1 — spine, then features, plus integration | | laptop 1 |
+| Dev 2 — features off the queue | | laptop 2 |
 | Navigator ×2 | | no — writes the next prompt, reviews output |
-| Timekeeper / Scope Cop | | no — owns the clock, **can cut the lead's work** |
+| Timekeeper / Scope Cop | | no — owns the clock, **can cut Dev 1's work** |
 | Demo Owner / QA | | phone — tests the live URL, owns the demo script, speaks |
 | Content / Seed data | | phone — owns `data/seed.json` alone |
 | Agent Wrangler | | phone — files and reviews cloud-agent issues |
 
 Navigators and drivers swap every 25 minutes, so four people touch the
-keyboards. Pick the Timekeeper deliberately: the lead is coding, so the clock
+keyboards. Pick the Timekeeper deliberately: Dev 1 is coding, so the clock
 must belong to someone willing to interrupt them.

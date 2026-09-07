@@ -39,12 +39,12 @@ ownership map.
 Write only inside `app/(feature)/${input:feature}/` and
 `components/feature/${input:feature}/`.
 
-The page shell and its nav link already exist — the lead scaffolded them. If
+The page shell and its nav link already exist — Dev 1 scaffolded them. If
 this task appears to need anything outside your folder (routing, the nav, the
 shell, config, shared types, seed data), **print what is needed and stop.**
 
 ## Report back
 
 - Which archetype you copied
-- Anything you need from the lead, as a paste-ready block
+- Anything you need from Dev 1, as a paste-ready block
 - Anything in the scope you deliberately did not build

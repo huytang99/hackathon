@@ -66,7 +66,7 @@ export default function HomePage() {
       </section>
 
       {/*
-        DELETE THIS SECTION AT ~T+12 ON CONTEST DAY.
+        DELETE THIS SECTION AT ~T+12.
         It is a signpost for the team, not part of any product.
       */}
       <section className="space-y-4">

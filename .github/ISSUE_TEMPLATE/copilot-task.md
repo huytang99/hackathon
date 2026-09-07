@@ -8,7 +8,7 @@ labels: ["copilot-agent"]
 <!--
   This template exists because cloud-agent success depends almost entirely on
   issue quality. A vague issue produces a PR you have to throw away, and on
-  contest day you cannot afford that.
+  today you cannot afford that.
 
   Golden rule: only assign PERIPHERAL work. Never the demo golden path — you
   cannot afford to wait on it.
@@ -34,11 +34,11 @@ labels: ["copilot-agent"]
 
 ## Files you MUST NOT touch
 
-- `lib/types.ts` — the shared contract, owned by the lead
-- `app/layout.tsx` and `components/shell/**` — the shell, owned by the lead
+- `lib/types.ts` — the shared contract, owned by Dev 1
+- `app/layout.tsx` and `components/shell/**` — the shell, owned by Dev 1
 - `components/ui/**` — vendored shadcn components
 - `package.json` — never add a dependency
-- Anything under `app/(feature)/**` — owned by a feature developer, in active use
+- Anything under `app/(feature)/**` — owned by a feature owner, in active use
 
 ## Rules
 

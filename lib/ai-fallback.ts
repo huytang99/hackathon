@@ -6,7 +6,7 @@
  * produce something plausible. A stack trace on stage costs more than a
  * slightly generic answer.
  *
- * At ~T+20 on contest day, rewrite these strings so they read like real output
+ * At ~T+20, rewrite these strings so they read like real output
  * for your actual topic. Ten minutes here buys total immunity from rate limits,
  * expired tokens and dead conference wifi.
  */

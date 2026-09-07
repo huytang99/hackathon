@@ -1,112 +1,118 @@
-# AI setup — what the PAT is, and whether you actually need it
+# Runtime AI setup
 
-## Three different things that keep getting confused
+## First: do you even need this?
+
+Only if **the app itself** calls a model while a user is using it. Example: a
+user pastes a ticket, the app sends it to a model, a category comes back.
+
+If the topic does not need that, delete these and move on — it removes a whole
+class of failure:
+
+```
+app/api/ai/route.ts   lib/ai.ts   lib/ai-fallback.ts   app/(core)/assistant/
+```
+
+## Three things that get confused
 
 | Thing | What it does | Who uses it |
 | --- | --- | --- |
-| **GitHub Copilot** | Writes your code, in your editor | You, the developer |
-| **Copilot coding agent** | Writes your code, in a cloud sandbox, from an issue | You, the developer |
-| **A runtime LLM API** | Answers questions **while a user is using your app** | Your app, at runtime |
+| **Copilot** | Writes your code, in your editor | You |
+| **Copilot coding agent** | Writes your code in a cloud sandbox, from an issue | You |
+| **A runtime LLM API** | Answers questions **while a user uses the app** | Your app |
 
-The important consequence: **your Copilot licence does not give your app an API
-to call.** They are separate products. Copilot helps you build the app; if the
-app itself needs to send text to a model and get an answer back, that is a
-different service and needs its own credentials.
+**Your Copilot licence does not give the app an API to call.** Different
+products. Runtime AI needs its own endpoint and its own credentials.
 
-Concrete example. Topic is "build a support ticket triager". A user pastes a
-ticket into your app, and the app sends it to a model which returns a category.
-That call happens at runtime, on behalf of a user, from your server. Copilot is
-not involved at all.
+## GitHub Models no longer works
 
-## So what is a PAT?
-
-A **Personal Access Token** is a long password-like string that proves your
-GitHub identity to an API, instead of a username and password. You generate it
-once and paste it into an environment variable.
-
-**GitHub Models** is GitHub's service that lets you call LLMs (GPT, Claude,
-Llama and others) over an endpoint that speaks the standard OpenAI API format,
-authenticated with that token. It is attractive for this contest because you
-already have GitHub accounts — no vendor signup, no procurement, no company
-credit card, and it is on-theme for a GitHub event.
-
-## Why the token must stay on the server
-
-Anything you send to the browser is readable by anyone who opens developer
-tools. A token in client-side JavaScript is a published token.
-
-So the flow is:
+`models.github.ai` was **retired on 30 July 2026** — playground, model catalog
+and inference API. There is no grandfathering and all its tokens are invalid.
+Calling it now returns:
 
 ```
-browser  ──►  /api/ai (your server, holds the token)  ──►  GitHub Models
+HTTP 410  {"error":{"code":"github_models_retirement_brownout", ...}}
 ```
 
-That is the entire reason `app/api/ai/route.ts` exists, and the only reason this
-app has any server-side code at all. `lib/ai.ts` is the thin client that calls
-your own route. **Never call the upstream API from a component.**
+A `models:read` PAT cannot fix this. The service is gone. If you find a blog
+post or tutorial recommending it, that post is out of date.
 
-## Do you actually need this?
+## Configure any OpenAI-compatible provider
 
-Roughly a coin flip, depending on the topic — which is exactly why it is set up
-in advance rather than built under time pressure.
+The route is provider-agnostic. Set three variables in `.env.local`:
 
-- **Topic needs runtime AI** → set `GITHUB_MODELS_TOKEN` and you are done in
-  two minutes.
-- **Topic does not** → delete `app/api/ai/route.ts`, `lib/ai.ts`,
-  `lib/ai-fallback.ts` and `app/(core)/assistant/`. Twenty seconds, and it
-  removes an entire class of failure.
+```bash
+AI_BASE_URL=...     # provider endpoint
+AI_TOKEN=...        # provider credential
+AI_MODEL=gpt-4o-mini
+```
 
-Either way it costs nothing to have prepared it.
+Options, best first:
 
-## Setup (do this in the prep week, not on the day)
+1. **A company-internal or Azure Foundry endpoint.** Ask the organisers whether
+   one is available — this is the only option that needs no personal spend and
+   no approval from you. Azure Foundry is GitHub's official migration target and
+   speaks the same API, so it is usually just these three variables.
+   `AI_BASE_URL=https://<resource>.services.ai.azure.com/models`
+2. **A direct provider key** someone on the team already has.
+   `AI_BASE_URL=https://api.openai.com/v1`
+3. **Nothing — run on the canned answers.** See below. This is a legitimate
+   choice, not a failure.
 
-1. GitHub → **Settings** → **Developer settings** → **Personal access tokens** →
-   **Fine-grained tokens** → **Generate new token**.
-2. Scope: **`models:read`**. Nothing else. No repo access needed.
-3. Copy `.env.example` to `.env.local` and paste the token in.
-4. Test it: `npm run dev`, open `/assistant`, click a suggestion. If the reply
-   has **no** "offline answer" badge, the real model answered.
-5. Add the same variable to your Vercel project settings, or the deployed app
-   will silently use the fallback.
+Anything OpenAI-compatible works: OpenAI, Azure Foundry, OpenRouter, Groq,
+Together, a local Ollama, or a company gateway. Only the three variables change.
 
-## The constraints you must design around
+## Where the credential must live
 
-- **~10–20 requests per minute**, depending on tier.
-- **~8K input / 4K output tokens.**
+`.env.local` (gitignored) for local, and your host's environment-variable
+settings for the deployed app. Nowhere else.
 
-So: do not build anything that needs long context, high throughput, or many
-calls per user action. One call per button press, short prompts. This is fine
-for a demo and hopeless for a product — know which you are building.
+- **Never** commit a token, not even in a comment or an example.
+- **Never** paste a token into a chat prompt — prompts can be logged and
+  retained, so treat a pasted token as a published one.
+- **Never** put it in client code. Anything sent to the browser is readable by
+  anyone who opens devtools. That is the entire reason `app/api/ai/route.ts`
+  exists: the browser calls your route, and your route holds the key.
+
+## Restart after editing `.env.local`
+
+Next reads environment variables **at server start**. If you add a token while
+`npm run dev` is running, the running process will not see it and every answer
+will silently be a fallback. Stop the server and start it again.
+
+## Debugging: why am I always getting a fallback?
+
+The route swallows upstream errors on purpose — correct for a demo, unhelpful
+while wiring things up. Set `AI_DEBUG=1` in `.env.local` and the real error
+comes back in the response as `debug`:
+
+```bash
+curl -s localhost:3000/api/ai -H "content-type: application/json" \
+  -d '{"prompt":"say ok","task":"summarise"}'
+```
+
+`"source":"model"` means the real call worked. `"source":"fallback"` plus
+`debug` tells you why it did not. **Set `AI_DEBUG=0` before the demo.**
 
 ## The fallback is the point
 
 `lib/ai-fallback.ts` returns a canned, plausible answer whenever the real call
-cannot be made — missing token, rate limit, network failure, upstream error. The
-route is written so it **never throws and never returns an error status**.
+cannot be made — no token, rate limit, network failure, retired service. The
+route never throws and never returns an error status.
 
-**At ~T+20 on contest day, rewrite those canned strings so they read like real
-output for your actual topic.** Ten minutes there buys total immunity from rate
-limits, expired tokens and dead conference wifi. A generic-but-plausible answer
-on stage costs you almost nothing; a stack trace on stage costs you the demo.
+**Rewrite those strings so they read like real output for your topic.** Ten
+minutes there buys immunity from rate limits, dead venue wifi, and providers
+being switched off underneath you — which, as GitHub Models just demonstrated,
+does happen. A slightly generic answer on stage costs almost nothing; a stack
+trace costs the demo.
 
-The UI marks a fallback answer with a quiet "offline answer" badge and shows no
-error. That is the correct trade in front of judges.
+The UI marks a fallback with a quiet "offline answer" badge and shows no error.
 
-## Ask the organisers first
+## If the topic needs an agent
 
-- Does the company provide an internal LLM or Azure OpenAI endpoint you should
-  use instead? If so, prefer it — swap the `baseURL` in
-  `app/api/ai/route.ts` and skip the PAT entirely.
-- Is GitHub Models permitted on your accounts? Some org policies restrict it.
-
-## If the topic needs an actual agent
-
-You do not need an agent framework, and you should not add one. Microsoft Agent
-Framework is .NET and Python only — no first-class TypeScript — so it would mean
-a second runtime, a second service, a second deploy and CORS, inside 150
-minutes. Multi-agent orchestration is also the least predictable thing to put in
-front of judges.
+You do not need an agent framework. Microsoft Agent Framework is .NET and
+Python only — no first-class TypeScript — so it would mean a second runtime, a
+second service and CORS.
 
 The Vercel AI SDK is already installed. A tool-calling agent is `generateText`
-with `tools` and a step limit — the model reasons, calls your tools, loops until
-done. About 30 lines, TypeScript, same repo, deploys with the app.
+with `tools` and a step limit: the model reasons, calls your tools, loops until
+done. About 30 lines, same repo, deploys with the app.

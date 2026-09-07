@@ -19,7 +19,7 @@ Follow `.github/prompts/new-page.prompt.md` exactly, and
 The three mistakes that cost the most here, in order:
 
 1. **Writing outside your folder.** The page stub and its nav link already
-   exist — the lead scaffolded every feature folder up front. If a task seems to
+   exist — Dev 1 scaffolded every feature folder up front. If a task seems to
    need the shell, routing, config, `lib/types.ts` or `data/seed.json`, **print
    what is needed and stop.** Do not edit it.
 2. **Generating a page from scratch.** Copy the closest archetype from
@@ -28,4 +28,4 @@ The three mistakes that cost the most here, in order:
    `npm run verify`. If you are undoing your own earlier work, stop and say so.
 
 Finish every turn by reporting: which archetype you copied, anything you need
-from the lead as a paste-ready block, and anything in scope you did not build.
+from Dev 1 as a paste-ready block, and anything in scope you did not build.

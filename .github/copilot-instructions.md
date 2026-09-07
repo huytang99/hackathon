@@ -1,6 +1,6 @@
 # Copilot instructions — hack-starter
 
-A 2.5-hour hackathon app. Optimise for **a working, polished demo**, not for
+A 2.5-hour build. Optimise for **a working, polished demo**, not for
 production robustness. Prefer the boring, working option every time.
 
 This is the single source of truth. There are no other instruction files.
@@ -8,7 +8,7 @@ This is the single source of truth. There are no other instruction files.
 ## The product
 
 <!--
-  LEAD: fill these three lines at ~T+12, copied from PLAN.md §1. Two minutes,
+  DEV 1: fill these three lines at ~T+12, copied from PLAN.md §1. Two minutes,
   and it is the highest-value edit you can make to this file — every Copilot
   request in the repo reads it. Without it the model is guessing what it is
   building. Delete this comment when you fill it in.
@@ -27,16 +27,16 @@ date-fns · sonner · Vercel AI SDK.
 ## Where things live
 
 ```
-app/layout.tsx        shell + fonts + theme class     (lead)
-app/page.tsx          hero / landing screen           (lead)
-app/(core)/           the four archetypes to copy     (lead)
+app/layout.tsx        shell + fonts + theme class     (Dev 1)
+app/page.tsx          hero / landing screen           (Dev 1)
+app/(core)/           the four archetypes to copy     (Dev 1)
 app/(feature)/<name>/ one folder per feature          (that feature's owner)
 app/api/ai/route.ts   the ONLY server file
 components/ui/        22 shadcn components            (never edit)
-components/shell/     nav, page header, theme toggle  (lead)
+components/shell/     nav, page header, theme toggle  (Dev 1)
 components/signature/ MeshBackdrop, DisplayStat, RuledPanel
 components/feature/   feature-specific components
-lib/types.ts          SHARED types only               (lead writes)
+lib/types.ts          SHARED types only               (Dev 1 writes)
 lib/store.ts          zustand store — all data access
 lib/ai.ts             client helper for /api/ai
 data/seed.json        seed data                       (content owner)
@@ -55,7 +55,7 @@ Prefer running one of those over improvising a long prompt.
 ## Rule 1 — This app runs in SPA mode
 
 The most important rule here. Next.js server features are the main source of
-lost time in a hackathon, so they are banned.
+lost time here, so they are banned.
 
 - Every `page.tsx` and every interactive component starts with `"use client"`.
 - All data comes from `lib/store.ts` (a client-side zustand store).
@@ -79,7 +79,7 @@ and it is **not** finished early.
   `app/(feature)/triage/types.ts`. Do not push them into `lib/types.ts`.
   Domain models emerge while coding; that is expected and fine.
 - **Never edit `lib/types.ts` yourself.** If a shared type needs to change or
-  be added, print the exact block you need and stop. The lead pastes it and
+  be added, print the exact block you need and stop. Dev 1 pastes it and
   pushes within a minute. This happens many times during a build — it is the
   normal path, not a failure.
 - **Never** redeclare or locally shadow a type that already exists there.
@@ -144,10 +144,10 @@ owns is the most expensive mistake available here.
 
 | Owner | Directories |
 | --- | --- |
-| **Lead** | `app/layout.tsx`, `app/page.tsx`, `app/(core)/**`, `lib/**`, `data/**`, `components/shell/**`, `components/signature/**`, all config |
+| **Dev 1** | `app/layout.tsx`, `app/page.tsx`, `app/(core)/**`, `lib/**`, `data/**`, `components/shell/**`, `components/signature/**`, all config |
 | **Feature owner** | `app/(feature)/<feature>/**` and `components/feature/<feature>/**` — one named owner per feature folder |
 | Shared, read-only | `components/ui/**` |
-| Lead writes, everyone reads | `lib/types.ts` |
+| Dev 1 writes, everyone reads | `lib/types.ts` |
 
 Every task names the feature folder you own. **Write only inside it.** If the
 task seems to need a file outside it — a nav link, a route, a shared type, a

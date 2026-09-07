@@ -7,7 +7,7 @@ description: Get main green again, with the smallest possible change.
 
 Run it, read the actual error, and fix the root cause with the **smallest
 possible change**. Under time pressure the temptation is to refactor around a
-type error — do not. A red `main` blocks the other developer, so speed matters
+type error — do not. A red `main` blocks Dev 2, so speed matters
 more than elegance here.
 
 Constraints:

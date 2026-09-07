@@ -13,9 +13,9 @@
  * that is normal, and forcing them in here early is how you get it wrong.
  *
  * Rules:
- *   - Only the lead writes this file. Everyone else reads it and asks.
+ *   - Only Dev 1 writes this file. Everyone else reads it and asks.
  *   - Amendments during the build are EXPECTED, several times. Someone says
- *     "I need a dueDate on Item", the lead adds it and pushes inside a minute.
+ *     "I need a dueDate on Item", Dev 1 adds it and pushes inside a minute.
  *     That is the normal path, not a failure of planning.
  *   - Keep it flat and boring. No generics, no unions of unions, no `unknown`.
  */

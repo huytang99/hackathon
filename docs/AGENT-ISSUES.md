@@ -19,7 +19,7 @@ one also touches only files neither developer owns, so they merge cleanly.
    detail from the actual topic.
 3. Assign to **Copilot**.
 4. When the draft PR appears, review the diff on your phone and flag it to the
-   lead. **Only the lead merges**, and only into a green `main`.
+   Dev 1. **Only Dev 1 merges**, and only into a green `main`.
 
 Batch 1 (file at ~T+12): issues 1, 2, 6.
 Batch 2 (file at ~T+45, once types are stable): issues 3, 4, 5.
@@ -65,7 +65,7 @@ Batch 3 (file at ~T+70, only if the first two batches landed clean): 7, 8.
 > Add `app/(core)/about/page.tsx` describing what this product does and who it
 > is for, based on `PLAN.md`. Use `PageHeader` from
 > `@/components/shell/app-shell`. Three short sections, no marketing language,
-> no invented statistics. Print the nav entry for the lead to add — do not edit
+> no invented statistics. Print the nav entry for Dev 1 to add — do not edit
 > `components/shell/app-shell.tsx`.
 >
 > May touch: `app/(core)/about/**` only.
@@ -112,7 +112,7 @@ Batch 3 (file at ~T+70, only if the first two batches landed clean): 7, 8.
 
 - Anything on the demo golden path — you cannot wait 10 minutes for it.
 - Anything requiring a `lib/types.ts` change.
-- Anything in `app/(feature)/**` while a feature developer is working there.
+- Anything in `app/(feature)/**` while a feature owner is working there.
 - Vague quality requests ("make it better", "refactor this") — these produce
   huge unreviewable diffs.
 - Adding a dependency. Ever.

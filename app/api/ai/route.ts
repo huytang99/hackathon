@@ -10,10 +10,16 @@ import { fallbackFor } from "@/lib/ai-fallback";
  * browser. Anything shipped to the client is readable by anyone who opens
  * devtools, so the token stays here in an env var and the client calls us.
  *
+ * Provider-agnostic on purpose. Any OpenAI-compatible endpoint works — set
+ * AI_BASE_URL, AI_TOKEN and AI_MODEL. See docs/AI-SETUP.md.
+ *
  * Contract: this route NEVER throws and NEVER returns a non-200 except for a
- * malformed body. If the model is unreachable, rate-limited, or the token is
- * missing, it returns a canned answer with source:"fallback". The UI shows
- * something sensible either way.
+ * malformed body. If the model is unreachable, rate-limited, retired, or the
+ * token is missing, it returns a canned answer with source:"fallback". The UI
+ * shows something sensible either way.
+ *
+ * Set AI_DEBUG=1 in .env.local to surface the real upstream error in the
+ * response as `debug`. Never leave that on for the demo.
  */
 
 const BodySchema = z.object({
@@ -35,20 +41,23 @@ export async function POST(req: Request) {
     return Response.json({ error: "Invalid request body" }, { status: 400 });
   }
 
-  const token = process.env.GITHUB_MODELS_TOKEN;
+  const token = process.env.AI_TOKEN;
+  const baseURL = process.env.AI_BASE_URL;
+  const debug = process.env.AI_DEBUG === "1";
 
-  if (!token) {
-    return Response.json({ text: fallbackFor(body.task), source: "fallback" });
+  if (!token || !baseURL) {
+    return Response.json({
+      text: fallbackFor(body.task),
+      source: "fallback",
+      ...(debug ? { debug: "AI_TOKEN or AI_BASE_URL is not set" } : {}),
+    });
   }
 
   try {
-    const github = createOpenAI({
-      baseURL: "https://models.github.ai/inference",
-      apiKey: token,
-    });
+    const provider = createOpenAI({ baseURL, apiKey: token });
 
     const { text } = await generateText({
-      model: github(process.env.AI_MODEL ?? "openai/gpt-4o-mini"),
+      model: provider(process.env.AI_MODEL ?? "gpt-4o-mini"),
       system: body.system ?? DEFAULT_SYSTEM,
       prompt: body.prompt,
       maxOutputTokens: 700,
@@ -56,7 +65,11 @@ export async function POST(req: Request) {
     });
 
     return Response.json({ text, source: "model" });
-  } catch {
-    return Response.json({ text: fallbackFor(body.task), source: "fallback" });
+  } catch (error) {
+    return Response.json({
+      text: fallbackFor(body.task),
+      source: "fallback",
+      ...(debug ? { debug: error instanceof Error ? error.message : String(error) } : {}),
+    });
   }
 }
