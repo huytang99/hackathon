@@ -45,7 +45,8 @@ data/seed.json        seed data                       (content owner)
 ## Scripts and resources
 
 - `npm run dev` — dev server on :3000
-- `npm run verify` — **typecheck + build. This is the definition of done.**
+- `npm run verify` — **lint + typecheck + build. This is the definition of done.**
+  The lint step enforces the theme-token and SPA-mode rules mechanically.
 - `npm run format` — prettier
 
 Reusable prompts live in `.github/prompts/`: `kickoff` (produce the plan),
@@ -66,6 +67,9 @@ lost time here, so they are banned.
   handlers unless a secret key must be kept off the client.
 - Exception: `app/layout.tsx` stays a server component so it can export
   `metadata`. Never add `"use client"` to it, never put logic in it.
+
+> **Partly enforced by ESLint:** importing `next/headers` or `next/cache` fails
+> the build.
 
 ## Rule 2 — `lib/types.ts` holds SHARED types only
 
@@ -108,7 +112,13 @@ The app must not look like default shadcn. Colour lives entirely in
   `bg-blue-600`, `text-white`, `bg-black`. No hex. No `oklch()` outside
   `app/globals.css`.
 - **Never** `shadow-*` on a card or panel. Use `border` only. Shadowed cards are
-  the clearest tell of generated UI.
+  the clearest tell of generated UI. (`shadow-none` is allowed.)
+
+> **These two are enforced by ESLint, not trust.** `npm run verify` runs
+> `eslint .` first, so a raw colour class or a shadow utility **fails the build**
+> — in string literals and in template literals. Do not try to work around it
+> with string concatenation; fix the class. `components/ui/**` is exempt because
+> it is vendored.
 - Headings use `font-heading`. Body inherits `font-sans`. Never set fonts inline.
 
 **Charts:** use the shadcn wrapper (`ChartContainer`, `ChartTooltip`,

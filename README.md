@@ -10,7 +10,7 @@ built and verified, so the time goes into the product instead of the scaffold.
 ```bash
 npm ci
 npm run dev      # http://localhost:3000
-npm run verify   # typecheck + build — run this before every push
+npm run verify   # lint + typecheck + build — run this before every push
 ```
 
 ## Two files matter
@@ -29,12 +29,16 @@ needs it).
 
 ## How the build runs
 
-1. **T+0–5** — topic drops, 3 minutes silent idea writing, Dev 1 picks one.
-2. **T+5–12** — pick the **plan** agent in Copilot Chat, give it the topic and
-   the idea. It fills in `PLAN.md`: three golden-path steps, a 3–5 feature
-   queue, and the shared types block. **The team reads it aloud and fixes it by
-   hand** — that review is where the value is. Dev 1 pastes the types and pushes.
-3. **T+12–25** — Dev 1 builds the spine alone: theme, delete unused archetypes,
+1. **T+0–5** — topic drops, 3 minutes silent idea writing, Dev 1 picks one. If
+   the room has not converged by T+5, move on and let the plan agent choose.
+2. **T+5–14** — pick the **plan** agent in Copilot Chat and give it the topic.
+   An idea is optional: with none, it interrogates the problem, states what most
+   teams will build, generates three candidates at different risk levels, scores
+   them on demoability and buildability, and picks one. It fills in `PLAN.md`:
+   the angle, three golden-path steps, a 3–5 feature queue, the shared types
+   block. **The team reads it aloud and fixes it by hand** — that review is
+   where the value is. Dev 1 pastes the types and pushes.
+3. **T+14–25** — Dev 1 builds the spine alone: scaffold Dev 2 first, then theme,
    and scaffold a stub page plus nav link for *every* planned feature. Deploy.
    Live URL by T+25.
 4. **T+25–90** — both laptops pull features off the queue. One owner per folder.
@@ -94,6 +98,14 @@ VS Code predates custom agents, the prompts still work.
 
 **Five prompt files** in `.github/prompts/`: `kickoff` (produces the plan),
 `new-page` (build one feature end to end), `seed-data`, `polish-ui`, `fix-build`.
+
+**Executable guardrails** in `eslint.config.mjs`. Instructions are requests a
+model can ignore; lint rules are not. `npm run verify` runs `eslint .` first, so
+a raw Tailwind colour class (`bg-slate-100`, `text-white`), a shadow utility on
+a card, or a `next/headers` import **fails the build** — in string literals and
+template literals alike. The theme-token and SPA-mode rules therefore hold
+whether or not anyone read the instructions file. `components/ui/**` is exempt
+as vendored code.
 
 **`app/api/ai/route.ts`** — the only server file, existing purely to keep a model
 token off the client. Provider-agnostic: set `AI_BASE_URL`, `AI_TOKEN` and

@@ -12,40 +12,55 @@ off a keyboard entirely — to the cloud agent, to phones, or to someone's head.
 
 ---
 
-## T+0 → T+5 · Pick one idea
+## T+0 → T+5 · Gather ideas — but do not get stuck here
 
 Whole team. No laptops open.
 
 1. **3 minutes silent writing.** Everyone writes their idea on paper or a phone.
    No discussion. This gets eight brains contributing in a room with two
    keyboards, and stops the loudest voice setting direction.
-2. Dev 1 reads all eight aloud, picks **one**. A decision, not a vote.
+2. Dev 1 reads them aloud and picks **one** — a decision, not a vote.
 
-## T+5 → T+12 · One prompt produces the plan
+**If at T+5 the room has not converged, stop and move on anyway.** Hand the
+topic alone to the plan agent; it does the problem breakdown and picks the
+product itself, and you review its choice instead of inventing one. Arguing
+about the idea past T+5 costs more than any idea is worth.
 
-**This is the whole planning phase.** Dev 1 on laptop 1, Copilot Chat in agent
-mode, Navigator A reading over their shoulder.
+## T+5 → T+14 · One prompt produces the plan
+
+**This is the whole planning phase.** Dev 1 on laptop 1, Navigator A reading
+over their shoulder.
 
 Pick **plan** from the agent dropdown in Copilot Chat. That mode cannot write
 application code — only `PLAN.md` — so the model cannot start building while
 you are still deciding what to build. (If the dropdown does not show it, your
 VS Code is older: type `/kickoff` instead. Same content, no guardrail.)
 
-It asks for two inputs:
+Inputs:
 
-- `topic` — paste the announced topic verbatim
-- `idea` — two or three sentences on what the team chose
+- `topic` — paste the announced topic verbatim. **Required.**
+- `idea` — two or three sentences, **or leave it blank.** Blank is a supported
+  path, not a degraded one: the agent interrogates the topic, states what most
+  teams will build with it, generates three candidates at different risk
+  levels, scores them on demoability and buildability, and picks one.
 
-It rewrites `PLAN.md` with: the product sentence, **three golden-path steps**,
-which archetype each screen copies, a **3–5 feature queue** with folders and
-owners, the **shared types block**, the AI yes/no call, and the theme.
+If you did supply an idea, it is scored as a fourth candidate. The agent will
+tell you if a generated one scored higher, but keeps yours when the gap is
+small — you have context it does not, and you have to demo it.
+
+It shows its reasoning in chat, then rewrites `PLAN.md` with: the problem and
+the chosen angle, the product sentence, **three golden-path steps**, which
+archetype each screen copies, a **3–5 feature queue** with folders and owners,
+the **shared types block**, the AI yes/no call, and the theme.
 
 Then, and this is the part that matters:
 
-3. **Read it on screen as a group. Out loud.** Two minutes.
+3. **Read it on screen as a group. Out loud.** Three minutes.
 4. **Fix what is wrong by hand.** It will get something wrong — usually it
    over-scopes the feature queue, or invents a type nobody needs. Cutting is
    faster than regenerating. Do not re-run the prompt.
+   Sanity-check two things specifically: can you really click all three
+   golden-path steps, and do features 1 and 2 alone still make a demo?
 5. Dev 1 pastes the shared types block into `lib/types.ts`.
 6. Commit and push:
 
@@ -55,9 +70,9 @@ git add -A && git commit -m "Plan and shared types" && git push
 
 Why one prompt instead of a planning framework: 150 minutes does not survive a
 `specify → plan → tasks → implement` loop. This gets you a reviewed, committed
-plan in seven minutes, and the reviewing is the part that adds the value.
+plan in nine minutes, and the reviewing is the part that adds the value.
 
-## T+12 → T+25 · Dev 1 builds the spine, alone
+## T+14 → T+25 · Dev 1 builds the spine, alone
 
 Nobody else writes code yet. This is short, and it is what makes the next 65
 minutes conflict-free.
@@ -74,7 +89,7 @@ Dev 2, so it comes before everything else.
    npm run verify && git add -A && git commit -m "Scaffold <feature>" && git push
    ```
 
-   **Dev 2 pulls and starts building at ~T+15.** Without this they sit idle
+   **Dev 2 pulls and starts building at ~T+17.** Without this they sit idle
    until T+25, or worse, edit the shell themselves and collide with you.
 
 2. **Scaffold the remaining feature folders** the same way, all in one push.
@@ -87,7 +102,7 @@ Dev 2, so it comes before everything else.
 npm run verify && git add -A && git commit -m "Spine + feature scaffolds" && git push
 ```
 
-### What Dev 2 does between T+12 and T+15
+### What Dev 2 does between T+14 and T+17
 
 Only three minutes, so do not start a feature. Instead: read `PLAN.md`, decide
 which archetype your feature copies, and open a fresh Copilot Chat session with
@@ -96,7 +111,7 @@ runtime AI, rewrite the canned strings in `lib/ai-fallback.ts` for this topic �
 it is an isolated file nobody else touches, and it is the cheapest demo
 insurance in the repo.
 
-**Step 3 is the highest-value ten minutes of the day.** Because every feature
+**Steps 1 and 2 are the highest-value ten minutes of the day.** Because every feature
 folder and every nav link already exists, no feature owner ever needs to touch
 the shell or routing — which removes the single largest source of merge
 conflicts before it can happen.
@@ -153,7 +168,7 @@ whole window:
   feature owner holds.
 - **Nav and route additions** the plan did not anticipate.
 
-So Dev 1's day is: spine (13 min) → roughly half the features → integration
+So Dev 1's day is: spine (~11 min) → roughly half the features → integration
 duty throughout. Not supervision.
 
 ### Checkpoints — Timekeeper reads these verbatim

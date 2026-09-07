@@ -8,6 +8,25 @@ Everything below is placeholder until the kickoff prompt fills it in.
 
 ---
 
+## 0. Problem and angle
+
+Filled from the kickoff agent's phase A–D reasoning. A few lines each — this
+exists so both Copilot sessions know *why* we are building this, not just what.
+
+- **Who, specifically:** ...
+- **The moment of pain:** ...
+- **What they do today instead:** ...
+- **The one number that moves:** ...
+
+**What most teams will build with this topic:** ...
+
+**Our angle, and why:** ...
+_(Either "the same thing, executed better" — usually correct — or a
+deliberately narrower user or moment. Novelty for its own sake loses.)_
+
+**Rejected:** ... _(one line on the strongest candidate we did not pick, so we
+do not re-litigate it at T+50)_
+
 ## 1. The product
 
 **One sentence:** ...
