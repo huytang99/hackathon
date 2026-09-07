@@ -117,6 +117,15 @@ costs almost nothing; a stack trace costs the demo.
 **`escape-hatch/app.py`** — a Streamlit fallback for a genuinely data/ML-centric
 topic, where pandas beats React decisively.
 
+**GitHub Spec Kit** (`.specify/`, plus ten `speckit-*` skills in
+`.github/skills/`) is installed. We use two of its steps for real, at T+14:
+`/speckit-constitution` to record engineering principles and `/speckit-specify`
+for the baseline spec. We deliberately do **not** run `/speckit-implement` —
+in a 150-minute window, iterating against a committed types contract is faster,
+and the full spec-driven loop is widely reported as overkill below roughly two
+days of work. Rule 7 of the instructions file stops an agent wandering into the
+expensive steps mid-build.
+
 ## Deliberate omissions
 
 No authentication. No database, ORM or migrations. No Docker. No tests. No CI.

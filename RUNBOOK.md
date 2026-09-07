@@ -93,6 +93,22 @@ Dev 2, so it comes before everything else.
    until T+25, or worse, edit the shell themselves and collide with you.
 
 2. **Scaffold the remaining feature folders** the same way, all in one push.
+
+   Then, while still on laptop 1, spend **five minutes on Spec Kit** — the
+   toolkit is in the repo because the event asks for it, and this is the honest,
+   cheap way to actually use it:
+
+   - `/speckit-constitution` — hand it `.github/copilot-instructions.md` and
+     have it write our engineering principles into
+     `.specify/memory/constitution.md`. The principles already exist; this just
+     records them in Spec Kit's format.
+   - `/speckit-specify` — hand it `PLAN.md` and let it produce the baseline
+     `spec.md`.
+
+   Then **stop**. Do not run `/speckit-plan`, `/speckit-tasks` or
+   `/speckit-implement` (Rule 7). Those are the expensive steps and they would
+   fight the feature queue.
+
 3. **Set the theme** class on `<html>` in `app/layout.tsx` (from `PLAN.md` §7).
 4. **Delete the archetypes you are not using** and the signpost section at the
    bottom of `app/page.tsx`.
@@ -227,9 +243,29 @@ Agent Wrangler collects, from the log kept throughout — a 10-minute collection
 job, not a work block, because these artefacts already exist as a byproduct:
 
 - `.github/copilot-instructions.md` — how we kept two AI sessions consistent
-- `.github/prompts/*.prompt.md` — reusable prompts, not ad-hoc chat
+- `eslint.config.mjs` — the style rules enforced as build failures rather than
+  as requests to the model
+- `.github/prompts/*.prompt.md` and `.github/agents/*.agent.md` — reusable
+  prompts and modes, not ad-hoc chat
 - The cloud-agent PRs merged, with issue links
 - One honest sentence on what was delegated vs. hand-written
+
+### What to say about Spec Kit
+
+Say what you actually did, which is a stronger answer than compliance:
+
+> "We initialised Spec Kit, used `/speckit-constitution` to record our
+> engineering principles and `/speckit-specify` for the baseline spec. We
+> deliberately did **not** run `/speckit-implement`. In a 150-minute window with
+> two seats, iterating against a committed types contract and a custom
+> instructions file was faster — the full spec-driven loop is widely reported as
+> overkill below about two days of work. Here is the instructions file and the
+> prompt library we used instead."
+
+That answers the question a judge assessing Copilot proficiency is actually
+asking — do you understand the tool well enough to know when not to use it —
+and it survives a follow-up question, which a claim about a workflow you did not
+run does not. Git timestamps are visible in the repo.
 
 **No slide deck.** A README section or three slides maximum — slides compete for
 a laptop you do not have.

@@ -114,12 +114,13 @@ The app must not look like default shadcn. Colour lives entirely in
 - **Never** `shadow-*` on a card or panel. Use `border` only. Shadowed cards are
   the clearest tell of generated UI. (`shadow-none` is allowed.)
 
-> **These two are enforced by ESLint, not trust.** `npm run verify` runs
-> `eslint .` first, so a raw colour class or a shadow utility **fails the build**
-> — in string literals and in template literals. Do not try to work around it
-> with string concatenation; fix the class. `components/ui/**` is exempt because
-> it is vendored.
 - Headings use `font-heading`. Body inherits `font-sans`. Never set fonts inline.
+
+> **The colour and shadow rules are enforced by ESLint, not trust.**
+> `npm run verify` runs `eslint .` first, so a raw colour class or a shadow
+> utility **fails the build** — in string literals and in template literals.
+> Do not work around it with string concatenation; fix the class.
+> `components/ui/**` is exempt because it is vendored.
 
 **Charts:** use the shadcn wrapper (`ChartContainer`, `ChartTooltip`,
 `ChartTooltipContent` + a `ChartConfig`), never raw recharts. Colours come from
@@ -163,13 +164,31 @@ Every task names the feature folder you own. **Write only inside it.** If the
 task seems to need a file outside it — a nav link, a route, a shared type, a
 config change — **print what is needed and stop.** Do not edit it yourself.
 
-## Rule 7 — Do not build these
+## Rule 7 — Do not run the Spec Kit skills during the build
+
+`.specify/` and the ten `speckit-*` skills in `.github/skills/` are present
+because the event requires the toolkit to be in the repo. **They are not part of
+the build workflow.**
+
+- **Never run `/speckit-implement`.** It works from `tasks.md` and would try to
+  drive the whole build. It will not finish inside the time available and it
+  ignores the feature-queue ownership model in Rule 6.
+- **Never run `/speckit-plan`, `/speckit-tasks`, `/speckit-analyze`,
+  `/speckit-checklist` or `/speckit-converge`** unless a human explicitly asks
+  by name. Each generates or reconciles more markdown, which is time this build
+  does not have.
+- `/speckit-constitution` and `/speckit-specify` are run **once, by Dev 1, at
+  T+14** — see the runbook. Do not run them again.
+- `PLAN.md` is the plan. `lib/types.ts` is the contract. Do not look for
+  direction in `.specify/`.
+
+## Rule 8 — Do not build these
 
 No authentication or login. No database, ORM, Prisma, SQL or migrations. No
 Docker. No tests unless asked. No i18n. No error-boundary scaffolding. No
 `README` rewrites. No abstraction layers "for later" — there is no later.
 
-## Rule 8 — Never handle a secret
+## Rule 9 — Never handle a secret
 
 - **Never write a real token, key or credential into any file**, including
   examples and comments. Use `process.env.NAME` and document the variable in
@@ -181,7 +200,7 @@ Docker. No tests unless asked. No i18n. No error-boundary scaffolding. No
 Humans: do not paste a token into a chat prompt either. Prompts can be logged
 and retained, so a pasted token should be treated as a published one.
 
-## Rule 9 — Work in small steps
+## Rule 10 — Work in small steps
 
 The dominant failure mode of AI-assisted building is drift: after roughly ten
 turns in one session the model starts contradicting its own earlier decisions,
